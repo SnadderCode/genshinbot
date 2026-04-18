@@ -63,7 +63,7 @@ module.exports = {
 		try {
 			setInterval(function () {
 				sendNew(client);
-			}, 1000 * 5);
+			}, 1000 * 60);
 		} catch (e) {
 			console.error(e);
 		}
