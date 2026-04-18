@@ -1,3 +1,6 @@
+# custom Files
+data/
+
 # Logs
 logs
 *.log
