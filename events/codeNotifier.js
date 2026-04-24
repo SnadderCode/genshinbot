@@ -39,7 +39,7 @@ async function sendNew(client) {
 				.setStyle(ButtonStyle.Link)
 				.setURL(`https://genshin.mihoyo.com/en/gift?code=${code}`);
 			const header = new TextDisplayBuilder().setContent(`### New code available: ${code}`);
-			const text = new TextDisplayBuilder().setContent(`Rewards:${[...codes.get(code)].map((reward) => `${[...reward.entries()][0][0]} x${[...reward.entries()][0][1]}`).join(", ")}`);
+			const text = new TextDisplayBuilder().setContent(`Rewards: ${[...codes.get(code)].map((reward) => `${[...reward.entries()][0][0]} x${[...reward.entries()][0][1]}`).join(", ")}`);
 			const section = new SectionBuilder();
 
 			section.addTextDisplayComponents(header, text);
@@ -63,7 +63,7 @@ module.exports = {
 		try {
 			setInterval(function () {
 				sendNew(client);
-			}, 1000 * 5);
+			}, 1000 * 60);
 		} catch (e) {
 			console.error(e);
 		}
