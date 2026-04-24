@@ -1,14 +1,14 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials, MessageCreate } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, MessageFlags, Partials} = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const discordToken = process.env.DISCORD_TOKEN;
 
 const client = new Client({
-	intents: Object.values(GatewayIntentBits), // Yay <:)
+	intents: Object.values(GatewayIntentBits),
 	partials: [
 		Partials.Message,
 		Partials.Channel,
