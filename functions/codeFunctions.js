@@ -7,6 +7,8 @@ const cheerio = require("cheerio");
 
 const filePath = "./data/codes.txt";
 
+const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+
 async function getActivePromoCodes() {
 	const fandomCodes = await getActiveFandomCodes() || new Map();
 	const crimsonCodes = await getActiveCrimsonCodes() || new Map();
@@ -48,6 +50,10 @@ async function getActiveFandomCodes() {
 		rawDataCodeInner.shift();
 
 		const code = rawDataCodeInner.shift();
+
+		if (format.test(code)) {
+			continue;
+		}
 
 		if (!rawDataCodeInner[0].includes(";")) {
 			rawDataCodeInner.shift();
