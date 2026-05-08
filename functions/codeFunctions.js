@@ -19,15 +19,20 @@ async function getActivePromoCodes() {
 async function getActiveFandomCodes() {
 	const url =
 		"https://genshin-impact.fandom.com/api.php?action=query&titles=Promotional_Code&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*";
+
 	const response = await fetch(url);
-	const text = await response.text();	
+	const text = await response.text();
+
+	let data;
 
 	try {
-			const data = JSON.parse(text);
+		data = JSON.parse(text);
 	} catch (err) {
-			console.error("Response was not valid JSON");
-	}
+		console.error("Response was not valid JSON");
+		console.error(text);
 
+		return undefined;
+	}
 
 	const pages = data.query.pages;
 	const pageID = Object.keys(pages)[0];
@@ -37,13 +42,14 @@ async function getActiveFandomCodes() {
 	const start = pageContent.indexOf("Code Row<!--");
 	const end = pageContent.lastIndexOf("Code Row/Footer");
 
-	const timmedPageContent = pageContent.slice(start, end - 2);
+	const trimmedPageContent = pageContent.slice(start, end - 2);
 
-	const rawList = timmedPageContent.split("Code Row");
+	const rawList = trimmedPageContent.split("Code Row");
 
 	if (rawList.length < 1) {
 		return undefined;
 	}
+
 	rawList.shift();
 
 	const codes = new Map();
@@ -51,35 +57,55 @@ async function getActiveFandomCodes() {
 	for (const rawDataCode of rawList) {
 		const rawDataCodeInner = rawDataCode.split("|");
 
-		if (rawList.length < 1) {
+		if (rawDataCodeInner.length < 1) {
 			continue;
 		}
+
 		rawDataCodeInner.shift();
 
-		const code = rawDataCodeInner.shift();
+		const code = rawDataCodeInner.shift()?.trim();
 
-		if (format.test(code)) {
+		if (!code) {
 			continue;
 		}
 
-		if (!rawDataCodeInner[0].includes(";")) {
+		// Skip invalid formats if needed
+		if (typeof format !== "undefined" && format.test(code)) {
+			continue;
+		}
+
+		if (
+			rawDataCodeInner.length > 0 &&
+			!rawDataCodeInner[0].includes(";")
+		) {
 			rawDataCodeInner.shift();
+		}
+
+		if (rawDataCodeInner.length < 1) {
+			continue;
 		}
 
 		const rewardString = rawDataCodeInner[0].split(";");
 
-		const rewards = new Array();
+		const rewards = [];
 
 		for (const rawReward of rewardString) {
+			let [item, quantity] = rawReward.split("*");
+
+			item = item?.trim();
+			quantity = quantity?.match(/\d+/)?.[0];
+
+			if (!item || !quantity) {
+				continue;
+			}
+
 			const reward = new Map();
 
-			let [item, quanity] = rawReward.split("*");
+			reward.set(item, quantity);
 
-			quanity = quanity.match(/^\d+/)[0];
-
-			reward.set(item, quanity);
 			rewards.push(reward);
 		}
+
 		codes.set(code, rewards);
 	}
 
