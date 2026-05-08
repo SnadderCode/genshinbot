@@ -20,7 +20,14 @@ async function getActiveFandomCodes() {
 	const url =
 		"https://genshin-impact.fandom.com/api.php?action=query&titles=Promotional_Code&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*";
 	const response = await fetch(url);
-	const data = await response.json();
+	const text = await response.text();	
+
+	try {
+			const data = JSON.parse(text);
+	} catch (err) {
+			console.error("Response was not valid JSON");
+	}
+
 
 	const pages = data.query.pages;
 	const pageID = Object.keys(pages)[0];
