@@ -8,12 +8,12 @@ const {
 	MessageFlags,
 } = require("discord.js");
 
-const channelId = "1461048653841043488";
+const channelId = "1461048653841043488";	
 
 async function sendNew(client) {
 	const oldCodes = await getOldCodes();
 
-	const codes = await getActivePromoCodes();
+	const codes = await getPromoCodes();
 
 	const newCodes = new Array();
 

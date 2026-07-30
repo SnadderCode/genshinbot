@@ -7,16 +7,16 @@ const cheerio = require("cheerio");
 
 const filePath = "./data/codes.txt";
 
-const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+const format = /^[a-z0-9]+$/i;
 
-async function getActivePromoCodes() {
-	const fandomCodes = await getActiveFandomCodes() || new Map();
-	const crimsonCodes = await getActiveCrimsonCodes() || new Map();
+async function getPromoCodes() {
+	const fandomCodes = await getFandomCodes() || new Map();
+	const crimsonCodes = await getCrimsonCodes() || new Map();
 	const codes = new Map([...fandomCodes, ...crimsonCodes])
 	return codes;
 }
 
-async function getActiveFandomCodes() {
+async function getFandomCodes() {
 	const url =
 		"https://genshin-impact.fandom.com/api.php?action=query&titles=Promotional_Code&prop=revisions&rvprop=content&rvslots=main&format=json&origin=*";
 
@@ -70,7 +70,7 @@ async function getActiveFandomCodes() {
 		}
 
 		// Skip invalid formats if needed
-		if (typeof format !== "undefined" && format.test(code)) {
+		if (typeof format !== "undefined" && !format.test(code)) {
 			continue;
 		}
 
@@ -147,7 +147,7 @@ async function saveCodes(codes) {
 	return;
 }
 
-async function getActiveCrimsonCodes() {
+async function getCrimsonCodes() {
 	let script;
 
 	try {
@@ -177,7 +177,7 @@ async function getActiveCrimsonCodes() {
 	const codes = new Map();
 
 	for (const code of codesDict) {
-		if (code.code.toLowerCase().includes("livestream")) {
+		if (code.code.toLowerCase().includes("livestream") || format.test(code.code) === false) {
 			continue;
 		}
 
