@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node functions/codeFunctions.js"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
