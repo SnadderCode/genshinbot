@@ -10,8 +10,6 @@ const interval = 1000 * 60; // 1 minute
 
 async function sendNewCodes(channel) {
 	try {
-
-
 		const newCodes = await findNewCodes();
 
 		if (newCodes.size === 0) {
