@@ -1,6 +1,6 @@
-const {findNewCodes, saveNewCodes} = require("../code_tracker/code_tracker");
+const {findNewCodes, saveNewCodes} = require("../tracker/codeTracker");
 
-const {sendCodesToDiscord} = require("../code_tracker/sendCodes");
+const {sendCodesToDiscord} = require("../tracker/sendCodes");
 
 require("dotenv").config();
 
