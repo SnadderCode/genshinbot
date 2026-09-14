@@ -1,4 +1,10 @@
-const { ButtonBuilder, ButtonStyle, TextDisplayBuilder, SectionBuilder, MessageFlags} = require("discord.js");
+const {
+	ButtonBuilder,
+	ButtonStyle,
+	TextDisplayBuilder,
+	SectionBuilder,
+	MessageFlags,
+} = require("discord.js");
 
 async function buildCodeMessage(code, rewards) {
 	const button = new ButtonBuilder()
@@ -19,5 +25,5 @@ async function buildCodeMessage(code, rewards) {
 }
 
 module.exports = {
-  buildCodeMessage,
+	buildCodeMessage,
 };

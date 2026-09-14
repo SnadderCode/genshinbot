@@ -1,23 +1,18 @@
-
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Events, GatewayIntentBits, Partials} = require('discord.js');
-const dotenv = require('dotenv');
+const fs = require("node:fs");
+const path = require("node:path");
+const {Client, Events, GatewayIntentBits, Partials} = require("discord.js");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const discordToken = process.env.DISCORD_TOKEN;
 
 const client = new Client({
 	intents: Object.values(GatewayIntentBits),
-	partials: [
-		Partials.Message,
-		Partials.Channel,
-		Partials.Reaction
-	]
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const event = require(path.join(eventsPath, file));
@@ -28,7 +23,7 @@ for (const file of eventFiles) {
 	}
 }
 
-client.once(Events.ClientReady, readyClient => {
+client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 

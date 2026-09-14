@@ -6,8 +6,6 @@ require("dotenv").config();
 
 const interval = 1000 * 60; // 1 minute
 
-
-
 async function sendNewCodes(channel) {
 	try {
 		const newCodes = await findNewCodes();
@@ -34,16 +32,13 @@ module.exports = {
 	once: true,
 	async execute(client) {
 		try {
-      const channel = await client.channels.fetch(process.env.CHANNEL_ID);
-      sendNewCodes(channel);
+			const channel = await client.channels.fetch(process.env.CHANNEL_ID);
+			sendNewCodes(channel);
 			setInterval(function () {
 				sendNewCodes(channel);
 			}, interval);
 		} catch (error) {
-        console.error(
-            "[Discord] Failed to initialize:",
-            error
-        );
+			console.error("[Discord] Failed to initialize:", error);
 		}
 	},
 };
